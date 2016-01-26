@@ -8,9 +8,20 @@
 
 --    Variables
 
+local startupSite = "autoupdate"
+
+
+
+
+
+
+
+
+
+
 
 local version = "3.5"
-local build = 19
+local build = 20
 
 local w, h = term.getSize()
 
@@ -592,6 +603,63 @@ builtInSites["display"]["update"] = function()
 		end
 	end
 end
+
+
+
+
+builtInSites["display"]["autoupdate"] = function()
+	clear(theme.background, theme.text)
+
+	fill(1, 3, w, 3, theme.subtle)
+	term.setCursorPos(1, 4)
+	center("Update")
+
+	term.setBackgroundColor(theme.background)
+	if not http then
+		term.setCursorPos(1, 9)
+		center("HTTP is not enabled!")
+		print("")
+		center("Please enable it in your config")
+		center("file to download Firewolf updates.")
+	else
+		term.setCursorPos(1, 10)
+		center("Checking for updates...")
+
+		local available, err = updateAvailable()
+
+		term.setCursorPos(1, 10)
+		if available then
+			term.clearLine()
+			center("Update found!")
+
+			fill(1, 10, w, 2, theme.background)
+			term.setCursorPos(1, 10)
+			center("Downloading...")
+
+			local err = redownloadBrowser()
+
+			term.setCursorPos(1, 10)
+			term.clearLine()
+			if err then
+				center("Download failed!")
+			else
+				center("Download succeeded!")
+				center("Please restart Firewolf...")
+			end
+		elseif err then
+			term.clearLine()
+			center("Checking failed!")
+		else
+			term.clearLine()
+			center("No updates found.")
+		end
+	end
+	firewolf.redirect("firewolf")
+end
+
+
+
+
 
 
 
@@ -3137,7 +3205,7 @@ end
 
 
 local handleEvents = function()
-	loadTab(1, "firewolf")
+	loadTab(1, startupSite)
 	currentTab = 1
 
 	while true do
