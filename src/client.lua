@@ -10,7 +10,7 @@
 
 
 local version = "3.5"
-local build = 18
+local build = 19
 
 local w, h = term.getSize()
 
@@ -49,7 +49,7 @@ local serverLimitPerComputer = 1
 local websiteErrorEvent = "firewolf_websiteErrorEvent"
 local redirectEvent = "firewolf_redirectEvent"
 
-local baseURL = "https://raw.githubusercontent.com/1lann/Firewolf/master/src"
+local baseURL = "https://raw.githubusercontent.com/Towtow10/Firewolf/master/src"
 local buildURL = baseURL .. "/build.txt"
 local firewolfURL = baseURL .. "/client.lua"
 local serverURL = baseURL .. "/server.lua"
