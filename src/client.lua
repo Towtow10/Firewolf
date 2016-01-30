@@ -1,7 +1,11 @@
-
+if fs.exists(".settings/theme") == false then
+	local h = fs.open(".settings/theme", "w")
+	h.writeLine("defaultTheme")
+	h.close()
+end
 --
 --  Firewolf
---  Made by GravityScore and 1lann
+--  Made by GravityScore and 1lann and Towtow10
 --
 
 
@@ -20,8 +24,8 @@ local startupSite = "autoupdate"
 
 
 
-local version = "3.5"
-local build = 20
+local version = "3.6"
+local build = 21
 
 local w, h = term.getSize()
 
@@ -73,7 +77,7 @@ local downloadsLocation = "/downloads"
 
 local theme = {}
 
-local colorTheme = {
+local defaultTheme = {
 	background = colors.gray,
 	accent = colors.red,
 	subtle = colors.orange,
@@ -92,6 +96,36 @@ local grayscaleTheme = {
 	text = colors.white,
 	errorText = colors.white,
 }
+
+local iceTheme = {
+	background = colors.gray,
+	accent = colors.lightBlue,
+	subtle = colors.lightGray,
+
+	lightText = colors.gray,
+	text = colors.white,
+	errorText = colors.red,
+}
+
+
+
+function ChangeTheme()
+	local handle = fs.open(".settings/theme", "r")
+		read = handle.readLine()
+		if read == "defaultTheme" then
+			theme = defaultTheme
+		end
+		
+		if read == "grayscaleTheme" then
+			theme = grayscaleTheme
+		end
+		
+		if read == "iceTheme" then
+			theme = iceTheme
+		end
+		handle.close()
+end
+
 
 
 
@@ -467,7 +501,7 @@ builtInSites["display"]["firewolf"] = function()
 	center("Visit rdnt://help for help using Firewolf.")
 
 	term.setCursorPos(1, h - 2)
-	center("Made by GravityScore and 1lann")
+	center("Made by GravityScore and 1lann and Towtow10")
 end
 
 
@@ -480,7 +514,7 @@ builtInSites["display"]["credits"] = function()
 
 	term.setBackgroundColor(theme.background)
 	term.setCursorPos(1, 11)
-	center("Written by GravityScore and 1lann")
+	center("Written by GravityScore and 1lann and Towtow10")
 	print("")
 	center("RC4 Implementation by AgentE382")
 end
@@ -506,6 +540,54 @@ builtInSites["display"]["help"] = function()
 	print("")
 	center("Visit rdnt://server to setup a server.")
 	center("Visit rdnt://update to update Firewolf.")
+end
+
+builtInSites["display"]["settings"] = function()
+	clear(theme.background, theme.text)
+
+	fill(1, 3, w, 3, theme.subtle)
+	term.setCursorPos(1, 4)
+	center("Settings")
+	
+	term.setBackgroundColor(theme.background)
+	term.setCursorPos(1, 7)
+	print("Grayscale")
+	print("IceTheme")
+	print("DefaultTheme")
+while true do
+  local event, button, x, y = os.pullEvent( "mouse_click" )
+  if x then
+ 
+  if x >= 1 and x <= 12 then -- DefaultTheme
+	if y == 9 then
+	local handle = fs.open(".settings/theme", "w")
+	handle.write("defaultTheme")
+	handle.close()
+	theme = defaultTheme
+	end
+	end
+ 
+  if x >= 1 and x <= 8 then -- IceTheme
+	if y == 8 then
+	local handle = fs.open(".settings/theme", "w")
+	handle.write("iceTheme")
+	handle.close()
+	theme = iceTheme
+	end
+	end
+  
+  if x >= 1 and x <= 9 then -- Grayscale
+	if y == 7 then
+	local handle = fs.open(".settings/theme", "w")
+		handle.write("grayscaleTheme")
+		handle.close()
+	theme = grayscaleTheme
+	
+end
+end
+end
+os.sleep(.2)
+end
 end
 
 
@@ -3259,7 +3341,7 @@ local main = function()
 	currentTab = 1
 
 	if term.isColor() then
-		theme = colorTheme
+		ChangeTheme()
 		enableTabBar = true
 	else
 		theme = grayscaleTheme
@@ -3286,7 +3368,7 @@ local handleError = function(err)
 	centerSplit(err, w - 4)
 	print("\n")
 	center("Please report this error to")
-	center("GravityScore or 1lann.")
+	center("Towtow10.")
 	print("")
 	center("Press any key to exit.")
 
@@ -3307,5 +3389,5 @@ end
 
 clear(colors.black, colors.white)
 center("Thanks for using Firewolf " .. version)
-center("Made by GravityScore and 1lann")
+center("Made by GravityScore and 1lann and Towtow10")
 print("")
