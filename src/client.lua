@@ -1,8 +1,3 @@
-if fs.exists(".settings/theme") == false then
-	local h = fs.open(".settings/theme", "w")
-	h.writeLine("defaultTheme")
-	h.close()
-end
 --
 --  Firewolf
 --  Made by GravityScore and 1lann and Towtow10
@@ -73,9 +68,17 @@ local originalTerminal = term.current()
 
 local firewolfLocation = "/" .. shell.getRunningProgram()
 local downloadsLocation = "/downloads"
+local settingsLocation = "/.fw_settings"
+local themeLocation = settingsLocation.."/theme"
 
 
 local theme = {}
+
+if not fs.exists(themeLocation) then
+	local h = fs.open(themeLocation, "w")
+	h.writeLine("defaultTheme")
+	h.close()
+end
 
 local defaultTheme = {
 	background = colors.gray,
@@ -110,7 +113,7 @@ local iceTheme = {
 
 
 function ChangeTheme()
-	local handle = fs.open(".settings/theme", "r")
+	local handle = fs.open(themeLocation, "r")
 		read = handle.readLine()
 		if read == "defaultTheme" then
 			theme = defaultTheme
@@ -554,40 +557,28 @@ builtInSites["display"]["settings"] = function()
 	print("Grayscale")
 	print("IceTheme")
 	print("DefaultTheme")
-while true do
-  local event, button, x, y = os.pullEvent( "mouse_click" )
-  if x then
- 
-  if x >= 1 and x <= 12 then -- DefaultTheme
-	if y == 9 then
-	local handle = fs.open(".settings/theme", "w")
-	handle.write("defaultTheme")
-	handle.close()
-	theme = defaultTheme
+	while true do
+		local event, button, x, y = os.pullEvent( "mouse_click" )
+		if x then
+			local handle = fs.open(themeLocation, "w")
+
+			if x >= 1 and x <= 12 and y == 9 then -- DefaultTheme
+				handle.write("defaultTheme")
+				theme = defaultTheme
+
+			elseif x >= 1 and x <= 8 and y == 8 then -- IceTheme
+				handle.write("iceTheme")
+				theme = iceTheme
+
+			elseif x >= 1 and x <= 9 and y == 7 then -- Grayscale
+				handle.write("grayscaleTheme")
+				theme = grayscaleTheme
+			end
+
+			handle.close()
+		end
+		os.sleep(.2)
 	end
-	end
- 
-  if x >= 1 and x <= 8 then -- IceTheme
-	if y == 8 then
-	local handle = fs.open(".settings/theme", "w")
-	handle.write("iceTheme")
-	handle.close()
-	theme = iceTheme
-	end
-	end
-  
-  if x >= 1 and x <= 9 then -- Grayscale
-	if y == 7 then
-	local handle = fs.open(".settings/theme", "w")
-		handle.write("grayscaleTheme")
-		handle.close()
-	theme = grayscaleTheme
-	
-end
-end
-end
-os.sleep(.2)
-end
 end
 
 
