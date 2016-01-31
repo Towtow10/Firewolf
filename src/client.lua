@@ -3380,5 +3380,5 @@ end
 
 clear(colors.black, colors.white)
 center("Thanks for using Firewolf " .. version)
-center("Made by GravityScore and 1lann and Towtow10")
+center("Made by GravityScore, 1lann and Towtow10")
 print("")
