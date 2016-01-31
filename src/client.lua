@@ -19,8 +19,8 @@ local startupSite = "autoupdate"
 
 
 
-local version = "3.6.1"
-local build = 22
+local version = "3.6.2"
+local build = 23
 
 local w, h = term.getSize()
 
